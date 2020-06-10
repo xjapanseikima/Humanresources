@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<tr th:each="department: ${department}">
+    <td th:text="${department.deptid}" />
+    <td th:text="${department.name}" />
+    <td th:text="${department.loc}" />
+</tr>
+</body>
+</html>
