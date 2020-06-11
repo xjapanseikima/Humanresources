@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.bht.humanresources.model.Department;
 import com.bht.humanresources.service.DepartmentService;
 @Controller
@@ -58,13 +57,16 @@ public class DeparmentController {
 		service.newDepartment(department);
         return "index";
 	}
-	//Delete 
-	//感覺可以用  getmapping 拿到參數再去 delete???????
-	// 網頁讀取不能直接post???????
+	/**Delete 
+	 * /
+	 * 操雞巴勒........ 竟然是因為這樣
+	 * https://blog.csdn.net/weixin_43570367/article/details/103751142?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
+	 * @param department
+	 * @return
+	 */
 	@DeleteMapping("/delete")
-	public String deleteDepartment(@ModelAttribute Department department){
-//		System.out.print(deptid);
-//		service.deleteDepartmentById(deptid);
+	public String deleteDepartment( @ModelAttribute Department department){
+		service.deleteDepartmentById(department.getDeptid());
         return "index";
 	}
 	//Update
