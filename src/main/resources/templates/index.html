@@ -11,18 +11,20 @@
 
 <title>HumanResources</title>
 
-<!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
+
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
 
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-
+<script>
+	function myFunction() {
+			document.getElementById("table-responsive1").style.visibility = "visible";   
+			console.log(4);
+		}
+	</script>
 </head>
-
 <body id="page-top">
 	<p th:text="${name}"></p>
 	<!-- Page Wrapper -->
@@ -47,9 +49,9 @@
 			<hr class="sidebar-divider my-0">
 
 			<!-- Nav Item - Dashboard -->
-			<li class="nav-item active"><a class="nav-link"
-				th:href="@{/}"> <i class="fas fa-fw fa-tachometer-alt"></i>
-					<span>Index</span></a></li>
+			<li class="nav-item active"><a class="nav-link" th:href="@{/}">
+					<i class="fas fa-fw fa-tachometer-alt"></i> <span>Index</span>
+			</a></li>
 
 			<!-- Divider -->
 			<hr class="sidebar-divider">
@@ -58,14 +60,16 @@
 			<div class="sidebar-heading">Table</div>
 
 			<!-- Nav Item - Pages Department Menu -->
-			<li class="nav-item"><a class="nav-link" th:href="@{/Dep/getAll}">
-					<i class="fas fa-fw fa-table"></i> <span>Department Table</span>
-			</a></li>
+			<li class="nav-item">
+				<a class="nav-link" th:onclick="myFunction()" th:href="@{/Dep/getAll}" > 
+					<i class="fas fa-fw fa-table">
+					</i> <span>Department Table</span>
+				</a>
+			</li>
 			<!-- Nav Item - Employee Collapse Menu -->
-			<li class="nav-item"><a class="nav-link collapsed" th:href="@{/Emp/getAll}"> <i
-					class="fas fa-fw fa-wrench"></i> <span>Employees</span>
+			<li class="nav-item"><a class="nav-link collapsed"
+				th:href="@{/Emp/getAll}" > <i class="fas fa-fw fa-wrench"></i> <span>Employees</span>
 			</a></li>
-			<!--  看到這邊喔 -->
 			<!-- Divider -->
 			<hr class="sidebar-divider">
 
@@ -73,28 +77,15 @@
 			<div class="sidebar-heading">Create/Update</div>
 
 			<!-- Nav Item - Pages Collapse Menu -->
-			<li class="nav-item">
-			<a class="nav-link collapsed" th:href="@{/Dep/createdepartment}"> 
-				<span>Create new Department</span>
+			<li class="nav-item" >
+			<a class="nav-link collapsed" th:href="@{/Dep/createdepartment}" > 
+				<span>Create newDepartment</span>
 			</a>
-				<div id="collapsePages" class="collapse"
-					aria-labelledby="headingPages" data-parent="#accordionSidebar">
-					<div class="bg-white py-2 collapse-inner rounded">
-						<h6 class="collapse-header">Login Screens:</h6>
-						<a class="collapse-item" href="login.html">Login</a> <a
-							class="collapse-item" href="register.html">Register</a> <a
-							class="collapse-item" href="forgot-password.html">Forgot
-							Password</a>
-						<div class="collapse-divider"></div>
-						<h6 class="collapse-header">Other Pages:</h6>
-						<a class="collapse-item" href="404.html">404 Page</a> <a
-							class="collapse-item" href="blank.html">Blank Page</a>
-					</div>
-				</div></li>
+			</li>
 
-			<!-- Nav Item - Charts -->
-			<li class="nav-item"><a class="nav-link" href="charts.html">
-					<i class="fas fa-fw fa-chart-area"></i> <span>Charts</span>
+			<!-- Create New Employee-->
+			<li class="nav-item"><a class="nav-link" th:href="@{/Emp/createemployee}">
+					<i class="fas fa-fw fa-chart-area"></i> <span>Create New Employee</span>
 			</a></li>
 
 
@@ -115,7 +106,7 @@
 			<!-- Topbar Search -->
 			<form
 				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
-				th:action="@{/Dep/getID}">
+				th:action="@{/Dep/getID}" >
 				<div class="input-group">
 					<input type="text" class="form-control bg-light border-0 small"
 						th:name="deptid" placeholder="Search for..." aria-label="Search"
@@ -127,38 +118,64 @@
 					</div>
 				</div>
 			</form>
-			<div class="table-responsive">
-				<table class="table table-bordered" id="dataTable" width="100%"
-					cellspacing="0">
-					<thead>
+			<div id="table-responsive1" >
+				<table class="table table-bordered" id="dataTable" width="100%" >
 						<tr>
 							<th>Department ID</th>
 							<th>Department Name</th>
 							<th>Department Location</th>
-							<th><b>Operation</b> </th>
+							<th><b>Operation</b></th>
 						</tr>
 						<tr th:each="department: ${department}">
 							<td th:text="${department.deptid}" />
 							<td th:text="${department.name}" />
 							<td th:text="${department.loc}" />
 							<td>
-							<form action="#" th:action="@{/Dep/delete}" th:object="${department}" th:method="delete">
-								 <input type="hidden" name="deptid" th:value="${department.deptid}">
-              				 	 <input type="hidden" name="name" th:value="${department.name}">
-							 	 <input type="hidden" name="loc" th:value="${department.loc}"> 
-                  			 	 <button type="submit">Delete</button>
-            					   </form>
-           				    	</td>
-						</tr>
-						<tr th:each="employee: ${employee}">
-							<td th:text="${employee.name}" />
-							<td th:text="${employee.deptid}" />
-							<td th:text="${employee.hiredate}" />
-							<td th:text="${employee.job}" />
-							<td th:text="${employee.manager}" />
+								<form action="#" th:action="@{/Dep/delete}"
+									th:object="${department}" th:method="delete">
+									<input type="hidden" name="deptid" th:value="${department.deptid}"> 
+									<input type="hidden" name="name" th:value="${department.name}"> 
+									<input type="hidden" name="loc" th:value="${department.loc}">
+									<button type="submit">Delete</button>
+								</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>
+
+			</div>
+			
+			<div id="table-responsive">
+				<table class="table table-bordered" id="dataTable" width="100%">
+						<tr>
+							<th>Employee ID</th>
+							<th>Employee Name</th>
+							<th>Employee Job</th>
+							<th>Employee manager</th>
+							<th>Employee hire date</th>
+							<th>Employee salary</th>
+							<th>Employee Department ID</th>
+							<th>Operation</th>					
+						</tr>
+						<tr th:each="employee: ${employee}">
+							<td th:text="${employee.empid}" />
+							<td th:text="${employee.name}" />
+							<td th:text="${employee.job}" />
+							<td th:text="${employee.manager}" />
+							<td th:text="${employee.hiredate}" />
+							<td th:text="${employee.salary}" />
+							<td th:text="${employee.deptid}" />
+							<td>
+								<form action="#" th:action="@{/Emp/delete}"
+									th:object="${employee}" th:method="delete">
+									<input type="hidden" name="empid" th:value="${employee.empid}"> 
+									<button type="submit">Delete</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
 			</div>
 			
 			<!-- Footer -->
@@ -181,47 +198,7 @@
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
 	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Bootstrap core JavaScript-->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Core plugin JavaScript-->
-	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="js/sb-admin-2.min.js"></script>
-
-	<!-- Page level plugins -->
-	<script src="vendor/chart.js/Chart.min.js"></script>
-
-	<!-- Page level custom scripts -->
-	<script src="js/demo/chart-area-demo.js"></script>
-	<script src="js/demo/chart-pie-demo.js"></script>
-
+	
 </body>
 
 </html>

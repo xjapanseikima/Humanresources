@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.bht.humanresources.model.Department;
 import com.bht.humanresources.service.DepartmentService;
 @Controller
@@ -32,18 +34,19 @@ public class DeparmentController {
 	@GetMapping("/createdepartment")
 	public ModelAndView redriectCreate() {
 		// 搞很久就是 幹這裡出大事！
-		ModelAndView mv = new ModelAndView("createDepartment");
+		ModelAndView mv = new ModelAndView("CreateDepartment");
 		mv.addObject(new Department());
 	    return mv;
 	}
 	//幹幹幹 因為不會ｊs 想要用 點擊 row的方式 delete 
-	@GetMapping("/deletedepartment")
+	@GetMapping("/DeleteDepartment")
 	public ModelAndView redriectDelete(Model model) {
-		ModelAndView mv = new ModelAndView("deleteDepartment");
+		ModelAndView mv = new ModelAndView("DeleteDepartment");
 		mv.addObject(new Department());
 	    return mv;
 	}
 	//操他媽拿到所有資料喔喔喔喔喔喔喔
+	//每個 request 完 都重新回get all那裡
 	@GetMapping("/getAll")
 	public ModelAndView getAllDepartment() { 
 		List <Department> department= service.getAllDepartment();
@@ -53,9 +56,9 @@ public class DeparmentController {
 	}
 	//Create
 	@PostMapping("/create")
-	public String newDepartment(@ModelAttribute Department department){
+	public ModelAndView newDepartment(@ModelAttribute Department department){
 		service.newDepartment(department);
-        return "index";
+        return getAllDepartment();
 	}
 	/**Delete 
 	 * /
@@ -65,11 +68,16 @@ public class DeparmentController {
 	 * @return
 	 */
 	@DeleteMapping("/delete")
-	public String deleteDepartment( @ModelAttribute Department department){
+	public ModelAndView  deleteDepartment( @ModelAttribute Department department){
+		service.deleteDepartmentById(department.getDeptid());
+        return  getAllDepartment();
+	}
+	//Update
+	@PutMapping("/update")
+	public String updateDepartment( @ModelAttribute Department department){
 		service.deleteDepartmentById(department.getDeptid());
         return "index";
 	}
-	//Update
 } 
 
 

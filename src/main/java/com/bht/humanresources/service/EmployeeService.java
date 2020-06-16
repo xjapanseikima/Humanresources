@@ -15,4 +15,10 @@ public class EmployeeService {
 	public List<Employee> getAllDepartment() {
 		return repo.findAll();
 	}
+	public void newDepartment(Employee employee) {
+		repo.newDepartment(employee.getEmpid(),employee.getName(),employee.getJob(), employee.getManager(), employee.getSalary(),employee.getDeptid());
+	}
+	public void deleteEmployeeById(int id) {
+		repo.deleteById(id);
+	}
 }
