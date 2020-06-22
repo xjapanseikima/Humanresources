@@ -54,7 +54,7 @@ public class Employee {
 	public int getDeptid() {
 		return deptid;
 	}
-	public void setDetpid(int deptid) {
+	public void setDeptid(int deptid) {
 		this.deptid = deptid;
 	}
 }

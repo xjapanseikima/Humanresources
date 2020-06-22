@@ -1,12 +1,11 @@
 package com.bht.humanresources.service;
 
-import java.util.List;
-
+import com.bht.humanresources.dao.DepartmentRepository;
+import com.bht.humanresources.model.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bht.humanresources.dao.DepartmentRepository;
-import com.bht.humanresources.model.Department;
+import java.util.List;
 @Service
 public class DepartmentService {
 
@@ -25,4 +24,7 @@ public class DepartmentService {
 	public void deleteDepartmentById(int id) {
         repo.deleteById(id);
 	}
+    public void updateDepartment(Department department) {
+        repo.updateDepartment(department.getDeptid(),department.getName(),department.getLoc());
+    }
 }

@@ -1,35 +1,19 @@
 package com.bht.humanresources.controller;
 
-import java.util.List;
-
+import com.bht.humanresources.model.Department;
+import com.bht.humanresources.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bht.humanresources.model.Department;
-import com.bht.humanresources.service.DepartmentService;
+import java.util.List;
 @Controller
 @RequestMapping("/Dep")
 public class DeparmentController {
 	@Autowired
 	DepartmentService service;
-	//Read 為何 不能只有 get 還要post?????
-	@RequestMapping(value = "/getID", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView getDepartment(@RequestParam(value = "deptid")  int id) {
-		ModelAndView mv = new ModelAndView("index");
-		System.out.println( service.getDepartmentById(id).getName());
-		mv.addObject("department", service.getDepartmentById(id));
-		return mv;
-	}
 	//CreateDepartment 和 create 到底可不可以合併呢？？？？？傻眼... 煩
 	@GetMapping("/createdepartment")
 	public ModelAndView redriectCreate() {
@@ -74,9 +58,10 @@ public class DeparmentController {
 	}
 	//Update
 	@PutMapping("/update")
-	public String updateDepartment( @ModelAttribute Department department){
-		service.deleteDepartmentById(department.getDeptid());
-        return "index";
+	public ModelAndView updateDepartment( @ModelAttribute Department department){
+		System.out.println(department.getDeptid());
+		service.updateDepartment( department);
+        return getAllDepartment();
 	}
 } 
 

@@ -18,15 +18,35 @@
 
 <!-- Custom styles for this template-->
 <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-<script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
 	function myFunction() {
-			document.getElementById("table-responsive1").style.visibility = "visible";   
-			console.log(4);
+		document.getElementById("table-responsive1").style.visibility = "visible";
+		document.getElementById("table-responsive").style.visibility = "false";
+		console.log(4);
 		}
-	</script>
+	function edit_row(no)
+	{
+		document.getElementById("edit_button"+no).style.display="none";
+		document.getElementById("save_button"+no).style.visibility="visible";
+		// var ID=document.getElementById("department_ID"+no);
+		// var name=document.getElementById("department_name"+no);
+		// var loc=document.getElementById("department_loc"+no);
+		// var div=document.getElementById("department_loc"+no);
+		// var savebtn=document.getElementById("save_button"+no);
+		// var ID_data=ID.innerHTML;
+		// var name_data=name.innerHTML;
+		// var loc_data=loc.innerHTML;
+		// var x= [[${department}]];
+		// console.log(x.deptid);
+		// ID.innerHTML= "<input type='text'  th:id='department_ID"+no+"' text='"+ID_data+"'/>";
+		// name.innerHTML="<input type='text' th:id='department_name"+no+"' text='"+name_data+"'>";
+		// loc.innerHTML="<input type='text' th:id='department_loc"+no+"' text='"+loc_data+"'>";
+	}
+	/*]]>*/
+</script>
 </head>
 <body id="page-top">
-	<p th:text="${name}"></p>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -38,7 +58,7 @@
 			<!-- Sidebar - Brand -->
 			<a
 				class="sidebar-brand d-flex align-items-center justify-content-center"
-				href="index.html">
+				th:href="@{/}">
 				<div class="sidebar-brand-icon rotate-n-15">
 					<i class="fas fa-laugh-wink"></i>
 				</div>
@@ -47,12 +67,6 @@
 
 			<!-- Divider -->
 			<hr class="sidebar-divider my-0">
-
-			<!-- Nav Item - Dashboard -->
-			<li class="nav-item active"><a class="nav-link" th:href="@{/}">
-					<i class="fas fa-fw fa-tachometer-alt"></i> <span>Index</span>
-			</a></li>
-
 			<!-- Divider -->
 			<hr class="sidebar-divider">
 
@@ -74,19 +88,20 @@
 			<hr class="sidebar-divider">
 
 			<!-- Heading -->
-			<div class="sidebar-heading">Create/Update</div>
+			<div class="sidebar-heading">Create</div>
 
 			<!-- Nav Item - Pages Collapse Menu -->
 			<li class="nav-item" >
-			<a class="nav-link collapsed" th:href="@{/Dep/createdepartment}" > 
-				<span>Create newDepartment</span>
+				<a class="nav-link collapsed" th:href="@{/Dep/createdepartment}" >
+				<span>	Create New Department</span>
 			</a>
 			</li>
-
 			<!-- Create New Employee-->
-			<li class="nav-item"><a class="nav-link" th:href="@{/Emp/createemployee}">
-					<i class="fas fa-fw fa-chart-area"></i> <span>Create New Employee</span>
-			</a></li>
+			<li class="nav-item">
+				<a class="nav-link collapsed" th:href="@{/Emp/createemployee}">
+					<span>	Create New Employee</span>
+			</a>
+			</li>
 
 
 
@@ -106,10 +121,10 @@
 			<!-- Topbar Search -->
 			<form
 				class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
-				th:action="@{/Dep/getID}" >
+				th:action="@{/getID}" >
 				<div class="input-group">
 					<input type="text" class="form-control bg-light border-0 small"
-						th:name="deptid" placeholder="Search for..." aria-label="Search"
+						th:name="ID" placeholder="Search for..." aria-label="Search"
 						aria-describedby="basic-addon2">
 					<div class="input-group-append">
 						<button class="btn btn-primary" type="button">
@@ -119,7 +134,7 @@
 				</div>
 			</form>
 			<div id="table-responsive1" >
-				<table class="table table-bordered" id="dataTable" width="100%" >
+				<table class="table table-bordered" id="departmentTable" width="100%" >
 						<tr>
 							<th>Department ID</th>
 							<th>Department Name</th>
@@ -127,16 +142,20 @@
 							<th><b>Operation</b></th>
 						</tr>
 						<tr th:each="department: ${department}">
-							<td th:text="${department.deptid}" />
-							<td th:text="${department.name}" />
-							<td th:text="${department.loc}" />
+							<td th:id="'department_ID' + ${department.deptid}" th:text="${department.deptid}"/>
+							<td th:id="'department_name' + ${department.deptid}" th:text="${department.name}"/>
+							<td th:id="'department_loc' + ${department.deptid}" th:text="${department.loc}" />
 							<td>
-								<form action="#" th:action="@{/Dep/delete}"
-									th:object="${department}" th:method="delete">
-									<input type="hidden" name="deptid" th:value="${department.deptid}"> 
-									<input type="hidden" name="name" th:value="${department.name}"> 
-									<input type="hidden" name="loc" th:value="${department.loc}">
+								<form action="#" th:action="@{/Dep/delete}" th:object="${department}" th:method="delete">
+									<input type="hidden" name="deptid" th:value="${department.deptid}">
 									<button type="submit">Delete</button>
+								</form >
+								<input type="button" th:id="'edit_button' + ${department.deptid}"  value="Edit" class="edit" th:onclick="'edit_row(' + ${department.deptid} + ')'"/>
+								<form  action="#" th:action="@{/Dep/update}"  th:id="'save_button' + ${department.deptid}"  th:method="put" style="visibility:collapse;"/>
+								<input type="hidden" name="deptid" th:value="${department.deptid}">
+								<input type="text" name="name" th:value="${department.name}">
+								<input type="text" name="loc" th:value="${department.loc}">
+								<button type="submit">Save</button>
 								</form>
 							</td>
 						</tr>
@@ -182,7 +201,7 @@
 			<footer class="sticky-footer bg-white">
 				<div class="container my-auto">
 					<div class="copyright text-center my-auto">
-						<span>Copyright &copy; Your Website 2019</span>
+						<span>Copyright &copy; ChunYU Website 2020</span>
 					</div>
 				</div>
 			</footer>
