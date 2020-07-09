@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("index")
 public class IndexController {
 	@Autowired
 	DepartmentService dep_service;
@@ -37,5 +37,9 @@ public class IndexController {
 	@GetMapping("")
 	public String defaultDetail() {
 	    return "index";
+	}
+	@GetMapping("/login")
+	public String Login() {
+		return "login";
 	}
 }
